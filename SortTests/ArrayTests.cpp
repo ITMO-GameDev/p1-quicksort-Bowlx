@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "../Array/array.h"
+#include "../Array/Array.h"
 
 TEST(ArrayTests, initTest) {
 	Array<int> d;
