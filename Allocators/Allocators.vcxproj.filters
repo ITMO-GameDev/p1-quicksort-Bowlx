@@ -30,14 +30,14 @@
     <ClCompile Include="StackedLinkedList.cpp">
       <Filter>Исходные файлы\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="FreeListAlocator.cpp">
-      <Filter>Исходные файлы\Allocators</Filter>
-    </ClCompile>
     <ClCompile Include="MemoryAllocator.cpp">
       <Filter>Исходные файлы\Allocators</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="FreeListAllocator.cpp">
+      <Filter>Исходные файлы\Allocators</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -50,13 +50,13 @@
     <ClInclude Include="SinglyLinkedList.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="FreeListAlocator.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="Utils.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="MemoryAllocator.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="FreeListAllocator.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

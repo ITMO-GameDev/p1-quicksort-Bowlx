@@ -149,14 +149,14 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="FixedSizeAllocator.cpp" />
-    <ClCompile Include="FreeListAlocator.cpp" />
+    <ClCompile Include="FreeListAllocator.cpp" />
     <ClCompile Include="MemoryAllocator.cpp" />
     <ClCompile Include="SinglyLinkedList.cpp" />
     <ClCompile Include="StackedLinkedList.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FixedSizeAllocator.h" />
-    <ClInclude Include="FreeListAlocator.h" />
+    <ClInclude Include="FreeListAllocator.h" />
     <ClInclude Include="MemoryAllocator.h" />
     <ClInclude Include="SinglyLinkedList.h" />
     <ClInclude Include="StackedLinkedList.h" />
