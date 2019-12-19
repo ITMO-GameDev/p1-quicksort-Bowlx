@@ -30,6 +30,11 @@ void FreeListAllocator::destroy()
 	m_start_ptr = nullptr;
 }
 
+std::size_t FreeListAllocator::getFreeSize() const
+{
+	return m_totalSize - m_used;
+}
+
 FreeListAllocator::~FreeListAllocator()
 {
 	this->destroy();

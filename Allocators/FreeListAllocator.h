@@ -45,10 +45,11 @@ public:
 	void destroy();
 
 	virtual void reset();
+	std::size_t getFreeSize() const;
 private:
 	FreeListAllocator(FreeListAllocator& freeListAllocator);
 
-	void coalescence(Node* prevBlock, Node* freeBlock);
+	void coalescence(Node* previousNode, Node* freeNode);
 
 	void find(std::size_t size, std::size_t alignment, std::size_t& padding, Node*& previousNode, Node*& foundNode) const;
 	void find_best(std::size_t size, std::size_t alignment, std::size_t& padding, Node*& previousNode, Node*& foundNode) const;
