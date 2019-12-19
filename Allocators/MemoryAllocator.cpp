@@ -99,6 +99,13 @@ void MemoryAllocator::destroy()
     {
         it->second->destroy();
     }
+    for (auto it = FLallocators.begin(); it != FLallocators.end(); ++it)
+    {
+        it->second->destroy();
+    }
+    FSAallocators.clear();
+    FLallocators.clear();
+    dumpFLMap.clear();
     isInit = false;
 }
 
