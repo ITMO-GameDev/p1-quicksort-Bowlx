@@ -28,8 +28,11 @@ void MemoryAllocator::init()
         auto allocator = new FixedSizeAllocator(start);
         allocator->init();
 
-        allocators.insert_or_assign(start, allocator);
+        FSAallocators.insert_or_assign(start, allocator);
     }
+    auto freelist = new FreeListAllocator(52428800, FreeListAllocator::PlacementPolicy::FIND_FIRST);
+    freelist->init();
+    FLallocators.insert_or_assign(0, freelist);
 
     isInit = true;
 }
@@ -37,31 +40,62 @@ void MemoryAllocator::init()
 void* MemoryAllocator::alloc(int size)
 {
     if (!isInit) return nullptr;
-	if(size > 512)
+	if(size > 10485760)
 	{
 		return VirtualAlloc(nullptr, size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
 	}
+	if( size > 512)
+	{
+        for (auto it = FLallocators.begin(); it != FLallocators.end(); ++it)
+        {
+            if (it->second->getFreeSize() > size)
+            {
+                auto mem =  it->second->allocate(size);
+                std::cout << mem<<std::endl;
+                dumpFLMap.insert_or_assign(mem, it->second);
+                return mem;
+         
+            }
+        }
+        auto freelist = new FreeListAllocator(52428800, FreeListAllocator::PlacementPolicy::FIND_FIRST);
+        freelist->init();
+        FLallocators.insert_or_assign(FLallocators.size()+1, freelist);
+        auto mem = freelist->allocate(size);
+        dumpFLMap.insert_or_assign(mem, freelist);
+        return mem;
+		
+	}
     auto alignedSize = align(size);
-    auto allocator = allocators[alignedSize];
+    auto allocator = FSAallocators[alignedSize];
     return  allocator->alloc();
 }
 
 void MemoryAllocator::free(void* ptr)
 {
     if (!isInit) return;
-    bool contains = false;
-	for (auto it=allocators.begin(); it!=allocators.end();++it)
+
+	for (auto it=FSAallocators.begin(); it!=FSAallocators.end();++it)
 	{
-       if( it->second->free(ptr)) contains=true;
+       if( it->second->free(ptr)) 
+       return;
 	}
-    if(!contains)
+    
+    if(dumpFLMap.count(ptr))
+    {
+           
+            dumpFLMap[ptr]->free(ptr);
+            dumpFLMap.erase(ptr);
+            return;
+    }
+    
+ 
     VirtualFree(ptr, 0, MEM_RELEASE);
 }
 
 void MemoryAllocator::destroy()
 {
     if (!isInit) return;
-    for (auto it = allocators.begin(); it != allocators.end(); ++it)
+    for (auto it = FSAallocators.begin(); it != FSAallocators.end(); ++it)
     {
         it->second->destroy();
     }
@@ -71,7 +105,7 @@ void MemoryAllocator::destroy()
 void MemoryAllocator::dumpBlocks()
 {
     if (!isInit) return;
-    for (auto it = allocators.begin(); it != allocators.end(); ++it)
+    for (auto it = FSAallocators.begin(); it != FSAallocators.end(); ++it)
     {
         it->second->dumpBlocks();
     }
